@@ -113,6 +113,13 @@ function loadDropdownsFromLocalStorage() {
     });
 }
 
+// Save the current state of a dropdown to localStorage.
+function saveDropdownToLocalStorage(dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    const options = Array.from(dropdown.options).map(option => option.value);
+    localStorage.setItem(dropdownId, JSON.stringify(options));
+}
+
 // Load saved notes from localStorage and display them.
 function loadNotesFromLocalStorage() {
     const notes = JSON.parse(localStorage.getItem('nurseNotes') || '[]');
