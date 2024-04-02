@@ -1,5 +1,5 @@
 // Define a cache name for easy versioning and updates
-var CACHE_NAME = 'nurse-notes-v1';
+var CACHE_NAME = 'nurse-notes-v2';
 
 // Specify the list of assets you want to cache.
 // Add more resources here as your app grows.
