@@ -5,76 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nurse Notes</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Ensure the path to your manifest file is correct. -->
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
-<main>
-    <h1>Nurse Notes Entry</h1>
-    <form id="notesForm">
-        <div class="fieldGroup">
-            <h2>Date and Time</h2>
-            <label for="noteDate">Date:</label>
-            <input type="date" id="noteDate">
-            <label for="noteTime">Time:</label>
-            <input type="time" id="noteTime" step="1">
+    <main>
+        <h1>Nurse Notes Entry</h1>
+        <form id="notesForm">
+            <div class="fieldGroup">
+                <h2>Date and Time</h2>
+                <label for="noteDate">Date:</label>
+                <input type="date" id="noteDate">
+                <label for="noteTime">Time:</label>
+                <input type="time" id="noteTime" step="1">
+            </div>
+
+            <div class="fieldGroup">
+                <h2>Nurse Name</h2>
+                <select id="nurseNameDropdown"></select>
+                <input type="text" id="nurseNameInput" placeholder="Type a Nurse Name">
+                <button type="button" id="addNurseName">Add</button>
+                <button type="button" id="removeNurseName">Remove</button>
+                <textarea id="nurseNameDetails" placeholder="Enter additional nurse details"></textarea>
+            </div>
+
+            <div class="fieldGroup">
+                <h2>Patient Name</h2>
+                <select id="patientNameDropdown"></select>
+                <input type="text" id="patientNameInput" placeholder="Type a Patient Name">
+                <button type="button" id="addPatientName">Add</button>
+                <button type="button" id="removePatientName">Remove</button>
+                <textarea id="patientNameDetails" placeholder="Enter additional patient details"></textarea>
+            </div>
+
+            <div class="fieldGroup">
+                <h2>Activities/Interventions</h2>
+                <select id="activityDropdown"></select>
+                <input type="text" id="activityInput" placeholder="Type an Activity/Intervention">
+                <button type="button" id="addActivity">Add</button>
+                <button type="button" id="removeActivity">Remove</button>
+                <textarea id="activityDetails" placeholder="Enter additional activity details"></textarea>
+            </div>
+
+            <div class="fieldGroup">
+                <h2>Observations</h2>
+                <select id="observationDropdown"></select>
+                <input type="text" id="observationInput" placeholder="Type an Observation">
+                <button type="button" id="addObservation">Add</button>
+                <button type="button" id="removeObservation">Remove</button>
+                <textarea id="observationDetails" placeholder="Enter additional observation details"></textarea>
+            </div>
+
+            <div class="fieldGroup">
+                <h2>Additional Notes</h2>
+                <textarea id="details" name="details" placeholder="Enter any additional notes here"></textarea>
+            </div>
+
+            <input type="submit" value="Save Note">
+        </form>
+
+        <!-- Control Buttons -->
+        <button type="button" id="resetForm">Reset Form and Clear All Data</button>
+        <button type="button" id="clearNotes">Clear Saved Notes</button>
+        <button id="exportNotes">Export Notes as Text File</button>
+
+        <!-- Notes Output Section -->
+        <div id="notesOutput">
+            <h2>Entered Nurse Notes</h2>
+            <!-- Notes will be displayed here -->
         </div>
-
-        <div class="fieldGroup">
-            <h2>Nurse Name</h2>
-            <select id="nurseNameDropdown"></select>
-            <input type="text" id="nurseNameInput" placeholder="Type a Nurse Name">
-            <button type="button" id="addNurseName">Add</button>
-            <button type="button" id="removeNurseName">Remove</button>
-            <textarea id="nurseNameDetails" placeholder="Enter additional nurse details"></textarea>
-        </div>
-
-        <div class="fieldGroup">
-            <h2>Patient Name</h2>
-            <select id="patientNameDropdown"></select>
-            <input type="text" id="patientNameInput" placeholder="Type a Patient Name">
-            <button type="button" id="addPatientName">Add</button>
-            <button type="button" id="removePatientName">Remove</button>
-            <textarea id="patientNameDetails" placeholder="Enter additional patient details"></textarea>
-        </div>
-
-        <div class="fieldGroup">
-            <h2>Activities/Interventions</h2>
-            <select id="activityDropdown"></select>
-        <input type="text" id="activityInput" placeholder="Type an Activity/Intervention">
-        <button type="button" id="addActivity">Add</button>
-        <button type="button" id="removeActivity">Remove</button>
-        <textarea id="activityDetails" placeholder="Enter additional activity details"></textarea>
-    </div>
-
-    <div class="fieldGroup">
-        <h2>Observations</h2>
-        <select id="observationDropdown"></select>
-        <input type="text" id="observationInput" placeholder="Type an Observation">
-        <button type="button" id="addObservation">Add</button>
-        <button type="button" id="removeObservation">Remove</button>
-        <textarea id="observationDetails" placeholder="Enter additional observation details"></textarea>
-    </div>
-
-    <div class="fieldGroup">
-        <h2>Additional Notes</h2>
-        <textarea id="details" name="details" placeholder="Enter any additional notes here"></textarea>
-    </div>
-
-    <input type="submit" value="Save Note">
-</form>
-
-<!-- Control Buttons -->
-<button type="button" id="resetForm">Reset Form and Clear All Data</button>
-<button type="button" id="clearNotes">Clear Saved Notes</button>
-<button id="exportNotes">Export Notes as Text File</button>
-
-<!-- Notes Output Section -->
-<div id="notesOutput">
-    <h2>Entered Nurse Notes</h2>
-    <!-- Notes will be displayed here -->
-</div>
-</main>
-<script src="script.js"></script>
+    </main>
+    <script src="script.js"></script>
+    <!-- Register the service worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js').then(function(registration) {
+                    // Registration was successful
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    // registration failed :(
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
 </body>
 </html>
-```
