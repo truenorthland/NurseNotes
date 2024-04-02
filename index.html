@@ -7,17 +7,17 @@
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <script>
-        // Check for service worker support
-        // If supported, register the service worker script located at the root
+        // Check for service worker support.
+        // If supported, register the service worker script located at the root.
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
                     .then(registration => {
-                        // Registration successful
+                        // Registration was successful.
                         console.log('ServiceWorker registration successful with scope: ', registration.scope);
                     })
                     .catch(err => {
-                        // Registration failed
+                        // Registration failed.
                         console.log('ServiceWorker registration failed: ', err);
                     });
             });
