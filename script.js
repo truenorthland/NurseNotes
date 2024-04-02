@@ -1,13 +1,11 @@
-// This script enhances the Nurse Notes web application with PWA features, handling dropdowns, local storage, and form submissions.
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
 });
 
 function initializeApp() {
     autofillDateTime();
+    attachEventListeners();
     loadDropdownsAndNotes();
-    setupEventListeners();
 }
 
 function autofillDateTime() {
@@ -16,7 +14,8 @@ function autofillDateTime() {
     document.getElementById('noteTime').value = now.toTimeString().split(' ')[0].substring(0, 5);
 }
 
-function setupEventListeners() {
+function attachEventListeners() {
+    // Setting up event listeners for all add and remove buttons
     document.getElementById('addNurseName').addEventListener('click', () => addDropdownOption('nurseNameDropdown', 'nurseNameInput'));
     document.getElementById('removeNurseName').addEventListener('click', () => removeDropdownOption('nurseNameDropdown'));
     document.getElementById('addPatientName').addEventListener('click', () => addDropdownOption('patientNameDropdown', 'patientNameInput'));
@@ -25,6 +24,8 @@ function setupEventListeners() {
     document.getElementById('removeActivity').addEventListener('click', () => removeDropdownOption('activityDropdown'));
     document.getElementById('addObservation').addEventListener('click', () => addDropdownOption('observationDropdown', 'observationInput'));
     document.getElementById('removeObservation').addEventListener('click', () => removeDropdownOption('observationDropdown'));
+    
+    // Handling form submission
     document.getElementById('notesForm').addEventListener('submit', saveNote);
     document.getElementById('exportNotes').addEventListener('click', exportNotesAsTextFile);
     document.getElementById('resetForm').addEventListener('click', confirmResetAndClearData);
@@ -37,7 +38,7 @@ function addDropdownOption(dropdownId, inputId) {
     const value = input.value.trim();
     if (value && ![...dropdown.options].map(option => option.value).includes(value)) {
         dropdown.options.add(new Option(value, value));
-        saveDropdownToLocalStorage(dropdownId, value);
+        saveDropdownToLocalStorage(dropdownId);
         input.value = '';
     }
 }
@@ -57,11 +58,14 @@ function saveDropdownToLocalStorage(dropdownId) {
 }
 
 function loadDropdownsAndNotes() {
-    ['nurseNameDropdown', 'patientNameDropdown', 'activityDropdown', 'observationDropdown'].forEach(dropdownId => {
-        const options = JSON.parse(localStorage.getItem(dropdownId) || '[]');
+    const dropdowns = ['nurseNameDropdown', 'patientNameDropdown', 'activityDropdown', 'observationDropdown'];
+    dropdowns.forEach(dropdownId => {
+        const savedOptions = JSON.parse(localStorage.getItem(dropdownId) || '[]');
         const dropdown = document.getElementById(dropdownId);
-        options.forEach(optionValue => {
-            dropdown.options.add(new Option(optionValue, optionValue));
+        dropdown.innerHTML = '';
+        savedOptions.forEach(option => {
+            const newOption = new Option(option, option);
+            dropdown.appendChild(newOption);
         });
     });
     loadNotesFromLocalStorage();
@@ -85,7 +89,7 @@ function saveNote(event) {
     displayNote(note);
     saveNotesToLocalStorage(note);
     document.getElementById('notesForm').reset();
-    autofillDateTime();
+    autofillDateTime(); // Ensure date and time are autofilled after form reset
 }
 
 function displayNote(note) {
@@ -103,34 +107,33 @@ function saveNotesToLocalStorage(note) {
 
 function loadNotesFromLocalStorage() {
     const notes = JSON.parse(localStorage.getItem('nurseNotes') || '[]');
-    notes.forEach(displayNote);
+    notes.forEach(note => displayNote(note));
 }
 
 function exportNotesAsTextFile() {
-    const notes = document.getElementById('notesOutput').innerText;
-    const blob = new Blob([notes], { type: 'text/plain' });
+    const notesContent = Array.from(document.getElementById('notesOutput').children)
+                              .map(note => note.textContent)
+                              .join('\n');
+    const blob = new Blob([notesContent], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.download = 'nurse_notes_' + new Date().toISOString().split('T')[0] + '.txt';
-    link.href = url;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'nurse_notes.txt';
+    a.click();
+    window.URL.revokeObjectURL(url);
 }
 
 function confirmResetAndClearData() {
-    if (confirm("This will delete all saved data and reset the form. Are you sure?")) {
+    if (confirm('Are you sure you want to reset the form and clear all saved data?')) {
         localStorage.clear();
         document.getElementById('notesForm').reset();
         document.getElementById('notesOutput').innerHTML = '';
-        ['nurseNameDropdown', 'patientNameDropdown', 'activityDropdown', 'observationDropdown'].forEach(dropdownId => {
-            document.getElementById(dropdownId).innerHTML = '';
-        });
+        loadDropdownsAndNotes(); // Re-load dropdowns since we're clearing local storage
     }
 }
 
 function clearSavedNotes() {
-    if (confirm("Are you sure you want to clear all saved notes? This action cannot be undone.")) {
+    if (confirm('Are you sure you want to clear all saved notes? This action cannot be undone.')) {
         localStorage.removeItem('nurseNotes');
         document.getElementById('notesOutput').innerHTML = '';
     }
