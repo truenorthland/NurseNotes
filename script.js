@@ -34,7 +34,7 @@ function attachEventListeners() {
     document.getElementById('clearNotes').addEventListener('click', clearSavedNotes);
 }
 
-// Function to add a new option to a dropdown.
+// Function to add a new option to a dropdown and save the update to localStorage.
 function addOption(dropdownId, inputId) {
     const dropdown = document.getElementById(dropdownId);
     const input = document.getElementById(inputId);
@@ -47,14 +47,20 @@ function addOption(dropdownId, inputId) {
     }
 }
 
-// Function to remove a selected option from a dropdown.
-function removeOption(dropdownId) {
-    const dropdown = document.getElementById(dropdownId);
-    if (dropdown.selectedIndex > -1) {
-        dropdown.remove(dropdown.selectedIndex);
-        saveDropdownToLocalStorage(dropdownId); // Update localStorage after removal.
-    }
+
+// Load saved dropdown options from localStorage and repopulate the dropdowns.
+function loadDropdownsFromLocalStorage() {
+    ['nurseNameDropdown', 'patientNameDropdown', 'activityDropdown', 'observationDropdown'].forEach(dropdownId => {
+        const savedOptions = JSON.parse(localStorage.getItem(dropdownId) || '[]');
+        const dropdown = document.getElementById(dropdownId);
+        dropdown.innerHTML = ''; // Clear existing options.
+        savedOptions.forEach(optionValue => {
+            const option = new Option(optionValue, optionValue);
+            dropdown.add(option);
+        });
+    });
 }
+
 
 // Handle form submission to save a new note.
 function handleFormSubmit(event) {
