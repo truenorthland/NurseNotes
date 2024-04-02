@@ -6,28 +6,28 @@ document.addEventListener('DOMContentLoaded', function() {
 // Initialize the application by setting up necessary states and event listeners.
 function initializeApp() {
     autofillDateTime(); // Set current date and time on the form.
+    attachEventListeners(); // Setup event listeners for all interactive elements.
     loadDropdownsFromLocalStorage(); // Load saved dropdown values from localStorage.
     loadNotesFromLocalStorage(); // Load saved notes from localStorage.
-    attachEventListeners(); // Setup event listeners for all interactive elements.
 }
 
 // Autofill the date and time fields with the current date and time.
 function autofillDateTime() {
     const now = new Date();
     document.getElementById('noteDate').value = now.toISOString().split('T')[0];
-    document.getElementById('noteTime').value = now.toTimeString().split(' ')[0].substring(0, 5);
+    document.getElementById('noteTime').value = now.toTimeString().split(' ')[0].substring(0, 8);
 }
 
 // Attach event listeners to various elements in the DOM.
 function attachEventListeners() {
-    document.getElementById('addNurseName').addEventListener('click', () => addOption('nurseNameDropdown', 'nurseNameInput'));
-    document.getElementById('removeNurseName').addEventListener('click', () => removeOption('nurseNameDropdown'));
-    document.getElementById('addPatientName').addEventListener('click', () => addOption('patientNameDropdown', 'patientNameInput'));
-    document.getElementById('removePatientName').addEventListener('click', () => removeOption('patientNameDropdown'));
-    document.getElementById('addActivity').addEventListener('click', () => addOption('activityDropdown', 'activityInput'));
-    document.getElementById('removeActivity').addEventListener('click', () => removeOption('activityDropdown'));
-    document.getElementById('addObservation').addEventListener('click', () => addOption('observationDropdown', 'observationInput'));
-    document.getElementById('removeObservation').addEventListener('click', () => removeOption('observationDropdown'));
+    document.getElementById('addNurseName').addEventListener('click', function() { addOption('nurseNameDropdown', 'nurseNameInput'); });
+    document.getElementById('removeNurseName').addEventListener('click', function() { removeOption('nurseNameDropdown'); });
+    document.getElementById('addPatientName').addEventListener('click', function() { addOption('patientNameDropdown', 'patientNameInput'); });
+    document.getElementById('removePatientName').addEventListener('click', function() { removeOption('patientNameDropdown'); });
+    document.getElementById('addActivity').addEventListener('click', function() { addOption('activityDropdown', 'activityInput'); });
+    document.getElementById('removeActivity').addEventListener('click', function() { removeOption('activityDropdown'); });
+    document.getElementById('addObservation').addEventListener('click', function() { addOption('observationDropdown', 'observationInput'); });
+    document.getElementById('removeObservation').addEventListener('click', function() { removeOption('observationDropdown'); });
     document.getElementById('notesForm').addEventListener('submit', handleFormSubmit);
     document.getElementById('exportNotes').addEventListener('click', exportNotes);
     document.getElementById('resetForm').addEventListener('click', resetFormAndClearData);
@@ -40,7 +40,8 @@ function addOption(dropdownId, inputId) {
     const input = document.getElementById(inputId);
     const optionValue = input.value.trim();
     if (optionValue && ![...dropdown.options].map(option => option.value).includes(optionValue)) {
-        dropdown.options.add(new Option(optionValue, optionValue));
+        const newOption = new Option(optionValue, optionValue);
+        dropdown.add(newOption);
         input.value = ''; // Clear input field after adding.
         saveDropdownToLocalStorage(dropdownId); // Save the updated dropdown to localStorage.
     }
@@ -101,13 +102,13 @@ function saveNoteToLocalStorage(note) {
 
 // Load saved dropdown options from localStorage and repopulate the dropdowns.
 function loadDropdownsFromLocalStorage() {
-    const dropdownIds = ['nurseNameDropdown', 'patientNameDropdown', 'activityDropdown', 'observationDropdown'];
-    dropdownIds.forEach(dropdownId => {
+    ['nurseNameDropdown', 'patientNameDropdown', 'activityDropdown', 'observationDropdown'].forEach(dropdownId => {
         const savedOptions = JSON.parse(localStorage.getItem(dropdownId) || '[]');
         const dropdown = document.getElementById(dropdownId);
         dropdown.innerHTML = ''; // Clear existing options.
         savedOptions.forEach(optionValue => {
-            dropdown.options.add(new Option(optionValue, optionValue));
+            const option = new Option(optionValue, optionValue);
+            dropdown.add(option);
         });
     });
 }
