@@ -1,7 +1,8 @@
-// Define a cache name, which helps in versioning and updating the cache later
+// Define a cache name for easy versioning and updates
 var CACHE_NAME = 'nurse-notes-v1';
 
-// Specify all the resources you want to cache
+// Specify the list of assets you want to cache.
+// Add more resources here as your app grows.
 var urlsToCache = [
     '/',
     '/index.html',
@@ -9,14 +10,13 @@ var urlsToCache = [
     '/script.js',
     '/manifest.json',
     '/icons/icon-192x192.png',
-    '/icons/icon-512x512.png',
-    // You can add more resources here
+    '/icons/icon-512x512.png'
 ];
 
-// The 'install' event is the first event triggered in the service worker lifecycle
-// Use it to cache all initial resources
+// The 'install' event is fired when the service worker is installed.
+// Use this event to cache all static assets.
 self.addEventListener('install', function(event) {
-    // Perform install steps
+    // Perform install steps: caching static assets
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(function(cache) {
@@ -26,13 +26,13 @@ self.addEventListener('install', function(event) {
     );
 });
 
-// The 'fetch' event is triggered for every network request made by your application
-// Use it to serve cached content when offline and update the cache with new content when online
+// The 'fetch' event is fired for every network request made by your app.
+// Use this event to serve your cached assets when offline.
 self.addEventListener('fetch', function(event) {
     event.respondWith(
         caches.match(event.request)
             .then(function(response) {
-                // Cache hit - return response from cache
+                // Cache hit - return the response from the cached version
                 if (response) {
                     return response;
                 }
@@ -43,7 +43,7 @@ self.addEventListener('fetch', function(event) {
 
                 return fetch(fetchRequest).then(
                     function(response) {
-                        // Check if we received a valid response
+                        // Check if we received a valid response. Only cache the response if it's from our origin and not an opaque response.
                         if(!response || response.status !== 200 || response.type !== 'basic') {
                             return response;
                         }
@@ -64,15 +64,15 @@ self.addEventListener('fetch', function(event) {
     );
 });
 
-// The 'activate' event is a good place to clean up old caches
+// The 'activate' event is a good place to clean up old caches.
 self.addEventListener('activate', function(event) {
-    var cacheWhitelist = [CACHE_NAME]; // Add any other cache names you want to keep
+    var cacheWhitelist = [CACHE_NAME]; // List of cache names to keep.
 
     event.waitUntil(
         caches.keys().then(function(cacheNames) {
             return Promise.all(
                 cacheNames.map(function(cacheName) {
-                    // Delete the caches that are not in the whitelist
+                    // Delete caches that are not in the whitelist
                     if (cacheWhitelist.indexOf(cacheName) === -1) {
                         return caches.delete(cacheName);
                     }
