@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+
+:root {
+    /* Updated color palette with clear distinctions */
+    --primary-color: #5C6BC0; /* Primary buttons */
+    --success-color: #4CAF50; /* Save button */
+    --warning-color: #FFC107; /* Clear saved notes button */
+    --danger-color: #F44336; /* Reset form button */
+    --background-color: #F5F5F5; /* Page background */
+    --text-color: #263238; /* Primary text color */
+
+    /* Spacing for a tight, but accessible layout */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+
+    /* Typography */
+    --font-base-size: 1rem; /* 16px for readability */
+    --font-heading-size: 1.25rem; /* Slightly larger for headings */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.5;
+    padding: var(--space-sm);
+}
+
+main {
+    max-width: 600px;
+    margin: var(--space-md) auto;
+    background: white;
+    padding: var(--space-lg);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+    font-family: 'Roboto', sans-serif;
+    color: var(--primary-color);
+    margin-bottom: var(--space-md);
+}
+
+h1 {
+    font-size: var(--font-heading-size);
+}
+
+.fieldGroup {
+    margin-bottom: var(--space-md);
+}
+
+label {
+    display: block;
+    margin-bottom: var(--space-xs);
+}
+
+input[type="text"], input[type="date"], input[type="time"], select, textarea {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    width: 100%;
+}
+
+textarea {
+    height: 80px; /* Optimized for space */
+}
+
+button, input[type="submit"] {
+    font-size: var(--font-base-size);
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    display: inline-block; /* Ensure button does not disappear */
+    margin-right: var(--space-xs); /* Spacing between buttons */
+}
+
+/* Specific button color coding */
+input[type="submit"] {
+    background-color: var(--success-color);
+    color: white;
+}
+
+#clearNotes {
+    background-color: var(--warning-color);
+    color: white;
+}
+
+#resetForm {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+#exportNotes {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+button:hover, input[type="submit"]:hover {
+    opacity: 0.85;
+    transform: scale(1.02);
+}
+
+input:focus, select:focus, textarea:focus, button:focus {
+    outline: 2px solid var(--primary-color);
+}
+
+/* Responsive adjustments for mobile devices */
+@media (max-width: 768px) {
+    main {
+        width: 95%;
+        padding: var(--space-md);
+    }
+
+    h1 {
+        font-size: calc(var(--font-base-size) + 0.25rem); /* Slightly larger on mobile */
+    }
+
+    .fieldGroup {
+        margin-bottom: var(--space-sm);
+    }
+
+    input, select, textarea, button, input[type="submit"] {
+        font-size: calc(var(--font-base-size) - 0.125rem); /* Slightly smaller on mobile */
+    }
+}
+
+#notesOutput {
+    background-color: #e9ecef;
+    padding: var(--space-sm);
+    border-radius: 4px;
+    margin-top: var(--space-lg);
+}
+
+#notesOutput div {
+    margin-bottom: var(--space-xs);
+    padding: var(--space-xs);
+    border-bottom: 1px solid #ddd;
+}

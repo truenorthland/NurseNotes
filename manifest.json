@@ -1,0 +1,27 @@
+{
+  "short_name": "NurseNotes",
+  "name": "Nurse Notes Entry System",
+  "description": "A convenient tool for nurses to enter and manage their notes, enhancing productivity and patient care.",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": ".",
+  "theme_color": "#5C6BC0",
+  "orientation": "portrait-primary",
+  "lang": "en-US",
+  "categories": ["health", "productivity", "tools"]
+}
