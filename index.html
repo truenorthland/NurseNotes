@@ -24,7 +24,7 @@
                 <h2>Nurse Name</h2>
                 <div class="inputGroup">
                     <select id="nurseNameDropdown" class="inputField"></select>
-                    <input type="text" id="nurseNameInput" class="inputField" placeholder="Input Text">
+                    <input type="text" id="nurseNameInput" class="inputField" placeholder="Type a Nurse Name">
                     <button type="button" id="addNurseName" class="iconButton"><i class="fas fa-plus"></i></button>
                     <button type="button" id="removeNurseName" class="iconButton"><i class="fas fa-minus"></i></button>
                 </div>
@@ -35,7 +35,7 @@
                 <h2>Patient Name</h2>
                 <div class="inputGroup">
                     <select id="patientNameDropdown" class="inputField"></select>
-                    <input type="text" id="patientNameInput" class="inputField" placeholder="Input Text">
+                    <input type="text" id="patientNameInput" class="inputField" placeholder="Type a Patient Name">
                     <button type="button" id="addPatientName" class="iconButton"><i class="fas fa-plus"></i></button>
                     <button type="button" id="removePatientName" class="iconButton"><i class="fas fa-minus"></i></button>
                 </div>
@@ -46,7 +46,7 @@
                 <h2>Activities/Interventions</h2>
                 <div class="inputGroup">
                     <select id="activityDropdown" class="inputField"></select>
-                    <input type="text" id="activityInput" class="inputField" placeholder="Input Text">
+                    <input type="text" id="activityInput" class="inputField" placeholder="Type an Activity/Intervention">
                     <button type="button" id="addActivity" class="iconButton"><i class="fas fa-plus"></i></button>
                     <button type="button" id="removeActivity" class="iconButton"><i class="fas fa-minus"></i></button>
                 </div>
@@ -57,7 +57,7 @@
                 <h2>Observations</h2>
                 <div class="inputGroup">
                     <select id="observationDropdown" class="inputField"></select>
-                    <input type="text" id="observationInput" class="inputField" placeholder="Input Text">
+                    <input type="text" id="observationInput" class="inputField" placeholder="Type an Observation">
                     <button type="button" id="addObservation" class="iconButton"><i class="fas fa-plus"></i></button>
                     <button type="button" id="removeObservation" class="iconButton"><i class="fas fa-minus"></i></button>
                 </div>
@@ -72,8 +72,9 @@
             <div class="buttonGroup">
                 <button type="button" id="logNote" class="actionButton">Log Note</button>
                 <button type="button" id="exportNotes" class="actionButton">Export Logged Notes</button>
+                <!-- Trigger for hidden file input for importing data -->
                 <button type="button" id="importData" class="actionButton">Import Dropdown Data</button>
-                <input type="file" id="importDropdownData" style="display: none;">
+                <input type="file" id="importDropdownData" style="display: none;" onchange="importDropdownData(event)">
                 <button type="button" id="exportData" class="actionButton">Export Dropdown Data</button>
                 <button type="button" id="clearData" class="actionButton danger">Clear Logged Notes</button>
                 <button type="button" id="resetForm" class="actionButton danger">Reset Form & Clear All Data</button>
