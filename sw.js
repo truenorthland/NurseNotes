@@ -1,8 +1,14 @@
-// Define a cache name for easy versioning and updates
-var CACHE_NAME = 'nurse-notes-v1';
+/**
+ * Defining the cache name provides control over the version of files cached.
+ * Incrementing the version number will trigger the browser to start the install
+ * event and cache the new files when the Service Worker next starts.
+ */
+var CACHE_NAME = 'nurse-notes-v2';
 
-// Specify the list of assets you want to cache.
-// Add more resources here as your app grows.
+/**
+ * urlsToCache is an array containing all the URLs you want to cache.
+ * Include all the assets required for your application to work offline.
+ */
 var urlsToCache = [
     '/',
     '/index.html',
@@ -13,45 +19,50 @@ var urlsToCache = [
     '/icons/icon-512x512.png'
 ];
 
-// The 'install' event is fired when the service worker is installed.
-// Use this event to cache all static assets.
+/**
+ * The 'install' event is the first event a service worker gets, and it only happens once.
+ * A good place to cache static assets.
+ */
 self.addEventListener('install', function(event) {
-    // Perform install steps: caching static assets
+    // event.waitUntil extends the lifetime of the install event until the passed promise resolves successfully.
     event.waitUntil(
+        // caches.open opens a cache by name, returning a promise for a Cache object.
         caches.open(CACHE_NAME)
             .then(function(cache) {
                 console.log('Opened cache');
+                // cache.addAll takes a list of URLs, retrieves them, and adds the resulting response objects to the given cache.
                 return cache.addAll(urlsToCache);
             })
     );
 });
 
-// The 'fetch' event is fired for every network request made by your app.
-// Use this event to serve your cached assets when offline.
+/**
+ * The 'fetch' event is fired every time a network request is made.
+ * This is where we intercept requests and serve the corresponding response from the cache.
+ */
 self.addEventListener('fetch', function(event) {
     event.respondWith(
+        // Attempt to find a match for the request in the cache.
         caches.match(event.request)
             .then(function(response) {
-                // Cache hit - return the response from the cached version
+                // If a match is found in the cache, return it.
                 if (response) {
                     return response;
                 }
-
-                // IMPORTANT: Clone the request. A request is a stream and can only be consumed once.
-                // Since we are consuming this once by cache and once by the browser for fetch, we need to clone the response.
-                var fetchRequest = event.request.clone();
-
-                return fetch(fetchRequest).then(
+                // Otherwise, fetch the resource from the network.
+                return fetch(event.request).then(
                     function(response) {
-                        // Check if we received a valid response. Only cache the response if it's from our origin and not an opaque response.
+                        // Check if we received a valid response (not a opaque response from a different origin).
                         if(!response || response.status !== 200 || response.type !== 'basic') {
                             return response;
                         }
-
-                        // IMPORTANT: Clone the response. A response is a stream and because we want the browser to consume the response
+                        
+                        // To cache the new file, we clone the response. The reason for this is that
+                        // the response is a stream and because we want the browser to consume the response
                         // as well as the cache consuming the response, we need to clone it so we have two streams.
                         var responseToCache = response.clone();
 
+                        // Open the cache again and put the fetched response into it.
                         caches.open(CACHE_NAME)
                             .then(function(cache) {
                                 cache.put(event.request, responseToCache);
@@ -64,15 +75,18 @@ self.addEventListener('fetch', function(event) {
     );
 });
 
-// The 'activate' event is a good place to clean up old caches.
+/**
+ * The 'activate' event is a good place to clean up old caches to manage storage efficiently.
+ */
 self.addEventListener('activate', function(event) {
-    var cacheWhitelist = [CACHE_NAME]; // List of cache names to keep.
+    var cacheWhitelist = [CACHE_NAME]; // Array containing names of caches to keep.
 
     event.waitUntil(
+        // caches.keys() returns a promise that resolves to an array of cache names.
         caches.keys().then(function(cacheNames) {
             return Promise.all(
+                // Map over all cache names and delete those not in cacheWhitelist.
                 cacheNames.map(function(cacheName) {
-                    // Delete caches that are not in the whitelist
                     if (cacheWhitelist.indexOf(cacheName) === -1) {
                         return caches.delete(cacheName);
                     }
