@@ -213,6 +213,6 @@ input:focus, select:focus, textarea:focus, button:focus {
 }
 
 /* Ensure the import button, which is hidden, takes no space */
-#importData {
+#importDropdownData {
     display: none;
 }
