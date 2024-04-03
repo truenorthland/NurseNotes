@@ -11,7 +11,6 @@
     --text-color: #263238; /* Primary text color */
     --button-text-color: #ffffff; /* Button text color */
     --input-border-color: #ccd0d5; /* Input border color */
-    --icon-button-color: #5C6BC0; /* Icon button color for better visibility */
 
     /* Spacing variables to maintain consistent margins and paddings */
     --space-xs: 4px;
@@ -117,7 +116,6 @@ label {
 
 .iconButton i {
     font-size: 1.2rem;
-    color: var(--icon-button-color); /* Ensure icon color is set for visibility */
 }
 
 /* Color coding for specific buttons reflecting the nature of the action */

@@ -6,8 +6,8 @@
     <title>Nurse Notes</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script src="https://kit.fontawesome.com/83716005eb.js" crossorigin="anonymous"></script> <!-- Use your own Font Awesome Kit here -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- Ensure you replace with your own Font Awesome kit -->
 </head>
 <body>
     <main>
@@ -71,17 +71,18 @@
 
             <div class="buttonGroup">
                 <button type="button" id="logNote" class="actionButton">Log Note</button>
-                <button type="button" id="exportNotes" class="actionButton">Export Logged Notes</button>
-                <button type="button" id="importData" class="actionButton">Import Dropdown Data</button>
-                <input type="file" id="importDropdownData" style="display: none;">
+                <button type="button" id="exportNotes" class="actionButton">Export Notes</button>
                 <button type="button" id="exportData" class="actionButton">Export Dropdown Data</button>
-                <button type="button" id="clearData" class="actionButton danger">Clear Logged Notes</button>
-                <button type="button" id="resetForm" class="actionButton danger">Reset Form & Clear All Data</button>
+                <input type="file" id="importDropdownData" style="display: none;">
+                <button type="button" id="importData" class="actionButton">Import Dropdown Data</button>
+                <button type="button" id="clearData" class="actionButton danger">Clear Data</button>
+                <button type="button" id="resetForm" class="actionButton danger">Reset Form</button>
             </div>
         </form>
+
         <section id="notesOutput">
             <h2>Logged Notes</h2>
-            <!-- Notes added via the form will be displayed here -->
+            <!-- Notes will be displayed here -->
         </section>
     </main>
     <script src="script.js"></script>

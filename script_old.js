@@ -1,6 +1,6 @@
 // script.js: Handles all the interactive functionality for the Nurse Notes application.
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     // Initialize the application once the DOM is fully loaded.
     initializeApp();
 });
@@ -27,12 +27,11 @@ function attachEventListeners() {
     document.getElementById('removeActivity').addEventListener('click', () => removeOption('activityDropdown'));
     document.getElementById('addObservation').addEventListener('click', () => addOption('observationDropdown', 'observationInput'));
     document.getElementById('removeObservation').addEventListener('click', () => removeOption('observationDropdown'));
-    document.getElementById('logNote').addEventListener('click', handleFormSubmit);
+    document.getElementById('notesForm').addEventListener('submit', handleFormSubmit);
     document.getElementById('resetForm').addEventListener('click', resetFormAndClearData);
-    document.getElementById('clearData').addEventListener('click', clearSavedNotes);
+    document.getElementById('clearNotes').addEventListener('click', clearSavedNotes);
     document.getElementById('exportNotes').addEventListener('click', exportNotes);
-    document.getElementById('exportData').addEventListener('click', exportDropdownData);
-    document.getElementById('importData').addEventListener('click', () => document.getElementById('importDropdownData').click());
+    document.getElementById('exportDropdownData').addEventListener('click', exportDropdownData);
     document.getElementById('importDropdownData').addEventListener('change', importDropdownData);
 }
 
@@ -55,11 +54,12 @@ function removeOption(dropdownId) {
     }
 }
 
-function handleFormSubmit() {
+function handleFormSubmit(event) {
+    event.preventDefault();
     const note = collectFormData();
     displayNote(note);
     saveNoteToLocalStorage(note);
-    document.getElementById('notesForm').reset();
+    this.reset();
     autofillDateTime();
 }
 
@@ -75,7 +75,7 @@ function collectFormData() {
         activityDetails: document.getElementById('activityDetails').value,
         observation: document.getElementById('observationDropdown').value,
         observationDetails: document.getElementById('observationDetails').value,
-        additionalNotes: document.getElementById('additionalNotes').value
+        additionalNotes: document.getElementById('details').value
     };
 }
 
@@ -144,12 +144,12 @@ function importDropdownData(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function (e) {
+        reader.onload = function(e) {
             const data = JSON.parse(e.target.result);
             Object.keys(data).forEach(key => {
                 localStorage.setItem(key, JSON.stringify(data[key]));
-                loadDropdownsFromLocalStorage();
             });
+            loadDropdownsFromLocalStorage();
         };
         reader.readAsText(file);
     }
