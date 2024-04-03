@@ -1,97 +1,162 @@
-/**
- * Defining the cache name provides control over the version of files cached.
- * Incrementing the version number will trigger the browser to start the install
- * event and cache the new files when the Service Worker next starts.
- */
-var CACHE_NAME = 'nurse-notes-v3';
+/* Import Google Fonts for use within the application, offering a consistent and modern typography */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
 
-/**
- * urlsToCache is an array containing all the URLs you want to cache.
- * Include all the assets required for your application to work offline.
- */
-var urlsToCache = [
-    '/',
-    '/index.html',
-    '/style.css',
-    '/script.js',
-    '/manifest.json',
-    '/icons/icon-192x192.png',
-    '/icons/icon-512x512.png'
-];
+:root {
+    /* Define a color palette for easy theming and adjustments across the application */
+    --primary-color: #5C6BC0; /* Primary theme color, used in headings and buttons */
+    --success-color: #4CAF50; /* Success actions color, like saving a note */
+    --warning-color: #FFC107; /* Warning color, for actions like clearing notes */
+    --danger-color: #F44336; /* Danger color, used for potentially destructive actions like resetting the form */
+    --background-color: #F5F5F5; /* General background color for the app */
+    --text-color: #263238; /* Primary text color */
 
-/**
- * The 'install' event is the first event a service worker gets, and it only happens once.
- * A good place to cache static assets.
- */
-self.addEventListener('install', function(event) {
-    // event.waitUntil extends the lifetime of the install event until the passed promise resolves successfully.
-    event.waitUntil(
-        // caches.open opens a cache by name, returning a promise for a Cache object.
-        caches.open(CACHE_NAME)
-            .then(function(cache) {
-                console.log('Opened cache');
-                // cache.addAll takes a list of URLs, retrieves them, and adds the resulting response objects to the given cache.
-                return cache.addAll(urlsToCache);
-            })
-    );
-});
+    /* Spacing variables to maintain consistent margins and paddings */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
 
-/**
- * The 'fetch' event is fired every time a network request is made.
- * This is where we intercept requests and serve the corresponding response from the cache.
- */
-self.addEventListener('fetch', function(event) {
-    event.respondWith(
-        // Attempt to find a match for the request in the cache.
-        caches.match(event.request)
-            .then(function(response) {
-                // If a match is found in the cache, return it.
-                if (response) {
-                    return response;
-                }
-                // Otherwise, fetch the resource from the network.
-                return fetch(event.request).then(
-                    function(response) {
-                        // Check if we received a valid response (not a opaque response from a different origin).
-                        if(!response || response.status !== 200 || response.type !== 'basic') {
-                            return response;
-                        }
-                        
-                        // To cache the new file, we clone the response. The reason for this is that
-                        // the response is a stream and because we want the browser to consume the response
-                        // as well as the cache consuming the response, we need to clone it so we have two streams.
-                        var responseToCache = response.clone();
+    /* Typography sizing for better readability and aesthetics */
+    --font-base-size: 1rem; /* Base font size, generally for body text */
+    --font-heading-size: 1.25rem; /* Slightly larger font size for headings */
+}
 
-                        // Open the cache again and put the fetched response into it.
-                        caches.open(CACHE_NAME)
-                            .then(function(cache) {
-                                cache.put(event.request, responseToCache);
-                            });
+/* Basic reset for margin and padding to ensure consistency across browsers */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-                        return response;
-                    }
-                );
-            })
-    );
-});
+/* Set up the body with a comfortable font, background, and text color */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.5;
+    padding: var(--space-sm);
+}
 
-/**
- * The 'activate' event is a good place to clean up old caches to manage storage efficiently.
- */
-self.addEventListener('activate', function(event) {
-    var cacheWhitelist = [CACHE_NAME]; // Array containing names of caches to keep.
+/* Main content area styling to center the content and provide readability */
+main {
+    max-width: 600px;
+    margin: var(--space-md) auto;
+    background: white;
+    padding: var(--space-lg);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
-    event.waitUntil(
-        // caches.keys() returns a promise that resolves to an array of cache names.
-        caches.keys().then(function(cacheNames) {
-            return Promise.all(
-                // Map over all cache names and delete those not in cacheWhitelist.
-                cacheNames.map(function(cacheName) {
-                    if (cacheWhitelist.indexOf(cacheName) === -1) {
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        })
-    );
-});
+/* Styling for headings, with a focus on hierarchy and readability */
+h1, h2 {
+    font-family: 'Roboto', sans-serif;
+    color: var(--primary-color);
+    margin-bottom: var(--space-md);
+}
+
+h1 {
+    font-size: var(--font-heading-size);
+}
+
+/* Field grouping for form elements, designed for clarity and organization */
+.fieldGroup {
+    margin-bottom: var(--space-md);
+}
+
+/* Label styling to enhance form structure and usability */
+label {
+    display: block;
+    margin-bottom: var(--space-xs);
+}
+
+/* Universal styling for text inputs, selects, and textareas for consistency */
+input[type="text"], input[type="date"], input[type="time"], select, textarea {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    width: 100%;
+}
+
+textarea {
+    height: 80px; /* Optimal height for text entry without scrolling */
+}
+
+/* Styling for buttons and submit input for a uniform, appealing look across actions */
+button, input[type="submit"] {
+    font-size: var(--font-base-size);
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    display: inline-block;
+    margin-right: var(--space-xs);
+}
+
+/* Color coding for specific buttons reflecting the nature of the action */
+input[type="submit"] {
+    background-color: var(--success-color);
+    color: white;
+}
+
+#clearNotes, #exportDropdownData /* New export button styling */ {
+    background-color: var(--warning-color);
+    color: white;
+}
+
+#resetForm {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+#exportNotes /* Keeping the original export notes button styling consistent */ {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Enhanced user interaction through hover effects */
+button:hover, input[type="submit"]:hover {
+    opacity: 0.85;
+    transform: scale(1.02);
+}
+
+/* Focus styles for form elements to improve accessibility and usability */
+input:focus, select:focus, textarea:focus, button:focus {
+    outline: 2px solid var(--primary-color);
+}
+
+/* Responsive design adjustments for mobile devices for better usability */
+@media (max-width: 768px) {
+    main {
+        width: 95%;
+        padding: var(--space-md);
+    }
+
+    h1 {
+        font-size: calc(var(--font-base-size) + 0.25rem);
+    }
+
+    .fieldGroup {
+        margin-bottom: var(--space-sm);
+    }
+
+    input, select, textarea, button, input[type="submit"] {
+        font-size: calc(var(--font-base-size) - 0.125rem);
+    }
+}
+
+/* Styling for the notes output section to clearly display entered notes */
+#notesOutput {
+    background-color: #e9ecef;
+    padding: var(--space-sm);
+    border-radius: 4px;
+    margin-top: var(--space-lg);
+}
+
+/* Individual note styling within the output section for readability */
+#notesOutput div {
+    margin-bottom: var(--space-xs);
+    padding: var(--space-xs);
+    border-bottom: 1px solid #ddd;
+}
