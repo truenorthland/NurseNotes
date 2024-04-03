@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nurse Notes</title>
+    <!-- Link to the stylesheet for styling the application -->
     <link rel="stylesheet" href="style.css">
+    <!-- Link to the Web App Manifest, which provides information about the application (name, icon, etc.) to the browser -->
     <link rel="manifest" href="manifest.json">
     <script>
-        // Check for service worker support.
-        // If supported, register the service worker script located at the root.
+        // Check for service worker support in the browser to enable PWA features like offline usage
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
                     .then(registration => {
-                        // Registration was successful.
+                        // Log success of service worker registration
                         console.log('ServiceWorker registration successful with scope: ', registration.scope);
                     })
                     .catch(err => {
-                        // Registration failed.
+                        // Log failure of service worker registration
                         console.log('ServiceWorker registration failed: ', err);
                     });
             });
@@ -37,7 +38,7 @@
                 <input type="time" id="noteTime" step="1">
             </div>
 
-            <!-- Nurse Name Section -->
+            <!-- Nurse Name Section: Allows entering and selecting nurse names -->
             <div class="fieldGroup">
                 <h2>Nurse Name</h2>
                 <select id="nurseNameDropdown"></select>
@@ -47,7 +48,7 @@
                 <textarea id="nurseNameDetails" placeholder="Enter additional nurse details"></textarea>
             </div>
 
-            <!-- Patient Name Section -->
+            <!-- Patient Name Section: Similar to the nurse name section for patient names -->
             <div class="fieldGroup">
                 <h2>Patient Name</h2>
                 <select id="patientNameDropdown"></select>
@@ -57,7 +58,7 @@
                 <textarea id="patientNameDetails" placeholder="Enter additional patient details"></textarea>
             </div>
 
-            <!-- Activities/Interventions Section -->
+            <!-- Activities/Interventions Section: For logging activities or interventions -->
             <div class="fieldGroup">
                 <h2>Activities/Interventions</h2>
                 <select id="activityDropdown"></select>
@@ -67,7 +68,7 @@
                 <textarea id="activityDetails" placeholder="Enter additional activity details"></textarea>
             </div>
 
-            <!-- Observations Section -->
+            <!-- Observations Section: For logging observations -->
             <div class="fieldGroup">
                 <h2>Observations</h2>
                 <select id="observationDropdown"></select>
@@ -77,21 +78,30 @@
                 <textarea id="observationDetails" placeholder="Enter additional observation details"></textarea>
             </div>
 
-            <!-- Additional Notes Section -->
+            <!-- Additional Notes Section: For any other notes -->
             <div class="fieldGroup">
                 <h2>Additional Notes</h2>
                 <textarea id="details" name="details" placeholder="Enter any additional notes here"></textarea>
             </div>
 
+            <!-- Submit button for the form -->
             <input type="submit" value="Save Note">
         </form>
 
+        <!-- Buttons for additional functionalities -->
         <button type="button" id="resetForm">Reset Form and Clear All Data</button>
         <button type="button" id="clearNotes">Clear Saved Notes</button>
         <button type="button" id="exportNotes">Export Notes as Text File</button>
 
+        <!-- New functionality: Buttons for exporting and importing dropdown data -->
+        <button type="button" id="exportDropdownData">Export Dropdown Data</button>
+        <input type="file" id="importDropdownData" style="display: none;">
+        <button type="button" onclick="document.getElementById('importDropdownData').click();">Import Dropdown Data</button>
+
+        <!-- Section to display entered notes -->
         <div id="notesOutput">
             <h2>Entered Nurse Notes</h2>
+            <!-- Notes added via the form will be displayed here -->
         </div>
     </main>
     <script src="script.js"></script>
