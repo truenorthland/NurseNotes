@@ -1,34 +1,34 @@
-/* Import Google Fonts for use within the application */
+/* Import Google Fonts for use within the application, offering a consistent and modern typography */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
 
 :root {
-    /* Color palette for consistent theming and easy adjustments */
-    --primary-color: #5C6BC0; /* Primary theme color */
-    --success-color: #4CAF50; /* Color used for success actions, e.g., saving a note */
-    --warning-color: #FFC107; /* Warning color, e.g., for cautionary actions */
-    --danger-color: #F44336; /* Danger color, used for potentially destructive actions */
-    --background-color: #F5F5F5; /* General background color */
+    /* Define a color palette for easy theming and adjustments across the application */
+    --primary-color: #5C6BC0; /* Primary theme color, used in headings and buttons */
+    --success-color: #4CAF50; /* Success actions color, like saving a note */
+    --warning-color: #FFC107; /* Warning color, for actions like clearing notes */
+    --danger-color: #F44336; /* Danger color, used for potentially destructive actions like resetting the form */
+    --background-color: #F5F5F5; /* General background color for the app */
     --text-color: #263238; /* Primary text color */
 
-    /* Spacing variables for consistent margins and paddings */
+    /* Spacing variables to maintain consistent margins and paddings */
     --space-xs: 4px;
     --space-sm: 8px;
     --space-md: 16px;
     --space-lg: 24px;
 
-    /* Typography sizing for readability and aesthetics */
-    --font-base-size: 1rem; /* Base font size for body text */
+    /* Typography sizing for better readability and aesthetics */
+    --font-base-size: 1rem; /* Base font size, generally for body text */
     --font-heading-size: 1.25rem; /* Slightly larger font size for headings */
 }
 
-/* Basic reset for margin and padding to prevent default browser styling inconsistencies */
+/* Basic reset for margin and padding to ensure consistency across browsers */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Set up the body with the imported fonts, background color, and text color */
+/* Set up the body with a comfortable font, background, and text color */
 body {
     font-family: 'Open Sans', sans-serif;
     background-color: var(--background-color);
@@ -37,7 +37,7 @@ body {
     padding: var(--space-sm);
 }
 
-/* Main content area styling, centered with a maximum width for readability */
+/* Main content area styling to center the content and provide readability */
 main {
     max-width: 600px;
     margin: var(--space-md) auto;
@@ -47,30 +47,29 @@ main {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Styling for headings, using the Roboto font and theme primary color */
+/* Styling for headings, with a focus on hierarchy and readability */
 h1, h2 {
     font-family: 'Roboto', sans-serif;
     color: var(--primary-color);
     margin-bottom: var(--space-md);
 }
 
-/* Specific size adjustments for the main heading */
 h1 {
     font-size: var(--font-heading-size);
 }
 
-/* Field grouping for form elements, with a bottom margin for spacing */
+/* Field grouping for form elements, designed for clarity and organization */
 .fieldGroup {
     margin-bottom: var(--space-md);
 }
 
-/* Label styling for form elements */
+/* Label styling to enhance form structure and usability */
 label {
     display: block;
     margin-bottom: var(--space-xs);
 }
 
-/* Universal styling for text inputs, selects, and textareas */
+/* Universal styling for text inputs, selects, and textareas for consistency */
 input[type="text"], input[type="date"], input[type="time"], select, textarea {
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -79,12 +78,11 @@ input[type="text"], input[type="date"], input[type="time"], select, textarea {
     width: 100%;
 }
 
-/* Adjustments to textarea height for adequate text entry space */
 textarea {
-    height: 80px; /* Optimized height for more text */
+    height: 80px; /* Optimal height for text entry without scrolling */
 }
 
-/* Styling for buttons and the submit input, including colors for different actions */
+/* Styling for buttons and submit input for a uniform, appealing look across actions */
 button, input[type="submit"] {
     font-size: var(--font-base-size);
     padding: var(--space-sm) var(--space-md);
@@ -92,17 +90,17 @@ button, input[type="submit"] {
     border-radius: 20px;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.2s;
-    display: inline-block; /* Ensures buttons are laid out inline */
-    margin-right: var(--space-xs); /* Adds spacing between buttons */
+    display: inline-block;
+    margin-right: var(--space-xs);
 }
 
-/* Specific background and text colors for different button actions */
+/* Color coding for specific buttons reflecting the nature of the action */
 input[type="submit"] {
     background-color: var(--success-color);
     color: white;
 }
 
-#clearNotes {
+#clearNotes, #exportDropdownData /* New export button styling */ {
     background-color: var(--warning-color);
     color: white;
 }
@@ -112,23 +110,23 @@ input[type="submit"] {
     color: white;
 }
 
-#exportNotes {
+#exportNotes /* Keeping the original export notes button styling consistent */ {
     background-color: var(--primary-color);
     color: white;
 }
 
-/* Hover effects for buttons, adding a slight scale for visual feedback */
+/* Enhanced user interaction through hover effects */
 button:hover, input[type="submit"]:hover {
     opacity: 0.85;
     transform: scale(1.02);
 }
 
-/* Focus styles for form elements, using the primary color for outlines */
+/* Focus styles for form elements to improve accessibility and usability */
 input:focus, select:focus, textarea:focus, button:focus {
     outline: 2px solid var(--primary-color);
 }
 
-/* Responsive adjustments for smaller devices, adjusting margins, paddings, and font sizes */
+/* Responsive design adjustments for mobile devices for better usability */
 @media (max-width: 768px) {
     main {
         width: 95%;
@@ -136,7 +134,7 @@ input:focus, select:focus, textarea:focus, button:focus {
     }
 
     h1 {
-        font-size: calc(var(--font-base-size) + 0.25rem); /* Larger font size for mobile */
+        font-size: calc(var(--font-base-size) + 0.25rem);
     }
 
     .fieldGroup {
@@ -144,11 +142,11 @@ input:focus, select:focus, textarea:focus, button:focus {
     }
 
     input, select, textarea, button, input[type="submit"] {
-        font-size: calc(var(--font-base-size) - 0.125rem); /* Smaller font size for compact display */
+        font-size: calc(var(--font-base-size) - 0.125rem);
     }
 }
 
-/* Styling for the notes output section, using a light background and padding for separation */
+/* Styling for the notes output section to clearly display entered notes */
 #notesOutput {
     background-color: #e9ecef;
     padding: var(--space-sm);
@@ -156,7 +154,7 @@ input:focus, select:focus, textarea:focus, button:focus {
     margin-top: var(--space-lg);
 }
 
-/* Individual note styling within the output section for clear separation */
+/* Individual note styling within the output section for readability */
 #notesOutput div {
     margin-bottom: var(--space-xs);
     padding: var(--space-xs);
