@@ -3,7 +3,7 @@
  * Incrementing the version number will trigger the browser to start the install
  * event and cache the new files when the Service Worker next starts.
  */
-var CACHE_NAME = 'nurse-notes-v2';
+var CACHE_NAME = 'nurse-notes-v1';
 
 /**
  * urlsToCache is an array containing all the URLs you want to cache.
