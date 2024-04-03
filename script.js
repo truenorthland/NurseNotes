@@ -55,7 +55,8 @@ function removeOption(dropdownId) {
     }
 }
 
-function handleFormSubmit() {
+function handleFormSubmit(event) {
+    event.preventDefault(); // Prevent form from submitting in the traditional way
     const note = collectFormData();
     displayNote(note);
     saveNoteToLocalStorage(note);
@@ -147,8 +148,13 @@ function importDropdownData(event) {
         reader.onload = function (e) {
             const data = JSON.parse(e.target.result);
             Object.keys(data).forEach(key => {
-                localStorage.setItem(key, JSON.stringify(data[key]));
-                loadDropdownsFromLocalStorage();
+                const dropdown = document.getElementById(key);
+                dropdown.innerHTML = ''; // Clear current options
+                data[key].forEach(value => {
+                    const option = new Option(value, value);
+                    dropdown.add(option);
+                });
+                saveDropdownToLocalStorage(key);
             });
         };
         reader.readAsText(file);
